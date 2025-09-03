@@ -7,10 +7,10 @@ import (
 )
 
 type ClipboardItemHandler struct {
-	service services.ClipboardItemService
+	service *services.ClipboardItemService
 }
 
-func NewClipboardItemHandler(service services.ClipboardItemService) *ClipboardItemHandler {
+func NewClipboardItemHandler(service *services.ClipboardItemService) *ClipboardItemHandler {
 	return &ClipboardItemHandler{service: service}
 }
 
