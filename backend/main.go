@@ -9,7 +9,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	_ "example/pesto-backend/cmd/pesto-server/docs"
+	_ "example/pesto-backend/docs"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/files"
 
@@ -18,7 +18,6 @@ import (
 	"example/pesto-backend/internal/repositories"
 	"example/pesto-backend/internal/services"
 	"example/pesto-backend/internal/handlers"
-	_ "example/pesto-backend/internal/models" // Import for Swagger docs
 )
 
 func main() {

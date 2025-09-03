@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-	"example/pesto-backend/internal/models"
+	"example/pesto-backend/internal/dto"
 	"example/pesto-backend/internal/services"
 	"github.com/gin-gonic/gin"
 )
@@ -134,12 +134,12 @@ func (h *ClipboardItemHandler) Delete(c *gin.Context) {
 // @Failure 500 {object} map[string]string
 // @Router /clipboard-items [post]
 func (h *ClipboardItemHandler) Create(c *gin.Context) {
-	var item models.ClipboardItem
+	var item dto.ClipboardItemDTO
 	if err := c.ShouldBindJSON(&item); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := h.service.Create(c.Request.Context(), &item)
+	err := h.service.Create(c.Request.Context(), item.ToModel())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
