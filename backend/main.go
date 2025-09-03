@@ -9,15 +9,13 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	_ "example/pesto-backend/docs"
+	_ "example/pesto-backend/internal/docs"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/files"
 
 	"example/pesto-backend/internal/config"
+	"example/pesto-backend/internal/routes"
 	"example/pesto-backend/internal/models"
-	"example/pesto-backend/internal/repositories"
-	"example/pesto-backend/internal/services"
-	"example/pesto-backend/internal/handlers"
 )
 
 func main() {
@@ -29,19 +27,9 @@ func main() {
 
 	db.AutoMigrate(&models.ClipboardItem{})
 
-	clipboardItemRepository := repositories.NewClipboardItemRepository(db)
-	clipboardItemService := services.NewClipboardItemService(clipboardItemRepository)
-	clipboardItemHandler := handlers.NewClipboardItemHandler(clipboardItemService)
-
 	engine := gin.Default()
 
-
-	engine.GET("/api/v1/clipboard-items", clipboardItemHandler.GetAll)
-	engine.GET("/api/v1/clipboard-items/:id", clipboardItemHandler.GetByID)
-	engine.GET("/api/v1/clipboard-items/content/:content_type", clipboardItemHandler.GetByContentType)
-	engine.GET("/api/v1/clipboard-items/current", clipboardItemHandler.GetCurrent)
-	engine.DELETE("/api/v1/clipboard-items/:id", clipboardItemHandler.Delete)
-	engine.POST("/api/v1/clipboard-items", clipboardItemHandler.Create)
+	routes.SetupRoutes(engine, db)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	engine.Run(":8080")
 }

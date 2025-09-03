@@ -128,13 +128,13 @@ func (h *ClipboardItemHandler) Delete(c *gin.Context) {
 // @Tags clipboard
 // @Accept json
 // @Produce json
-// @Param item body models.ClipboardItem true "Clipboard Item"
-// @Success 200 {object} models.ClipboardItem
+// @Param item body dto.ClipboardItemInputDto true "Clipboard Item"
+// @Success 201 {object} models.ClipboardItem
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /clipboard-items [post]
 func (h *ClipboardItemHandler) Create(c *gin.Context) {
-	var item dto.ClipboardItemDTO
+	var item dto.ClipboardItemInputDto
 	if err := c.ShouldBindJSON(&item); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -144,5 +144,5 @@ func (h *ClipboardItemHandler) Create(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, item)
+	c.JSON(http.StatusCreated, item)
 }
