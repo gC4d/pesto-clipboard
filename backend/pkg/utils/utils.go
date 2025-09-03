@@ -13,3 +13,11 @@ func FileExists(path string) bool {
     _, err := os.Stat(path)
     return err == nil
 }
+
+func CreateFileIfNotExists(path string) error {
+    if !FileExists(path) {
+        _, err := os.Create(path)
+        return err
+    }
+    return nil
+}
