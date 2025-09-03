@@ -34,7 +34,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.ClipboardItem"
+                                "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                             }
                         }
                     },
@@ -68,7 +68,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ClipboardItem"
+                            "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                         }
                     }
                 ],
@@ -76,7 +76,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ClipboardItem"
+                            "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                         }
                     },
                     "400": {
@@ -128,7 +128,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.ClipboardItem"
+                                "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                             }
                         }
                     },
@@ -161,7 +161,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ClipboardItem"
+                            "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                         }
                     },
                     "500": {
@@ -202,7 +202,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ClipboardItem"
+                            "$ref": "#/definitions/example_pesto-backend_internal_models.ClipboardItem"
                         }
                     },
                     "400": {
@@ -279,7 +279,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.ClipboardItem": {
+        "example_pesto-backend_internal_models.ClipboardItem": {
             "description": "A clipboard item with its content and metadata",
             "type": "object",
             "properties": {

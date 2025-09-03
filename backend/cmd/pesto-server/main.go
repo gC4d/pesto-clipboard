@@ -1,10 +1,15 @@
+// @title Pesto Clipboard API
+// @version 1.0
+// @description A clipboard manager API with automatic monitoring
+// @host localhost:8080
+// @BasePath /api/v1
 package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "example/pesto-backend/cmd/pesto-server/docs"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/files"
 
@@ -13,6 +18,7 @@ import (
 	"example/pesto-backend/internal/repositories"
 	"example/pesto-backend/internal/services"
 	"example/pesto-backend/internal/handlers"
+	_ "example/pesto-backend/internal/models" // Import for Swagger docs
 )
 
 func main() {
@@ -29,11 +35,14 @@ func main() {
 	clipboardItemHandler := handlers.NewClipboardItemHandler(clipboardItemService)
 
 	engine := gin.Default()
-	engine.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello, World!")
-	})
 
-	engine.GET("/clipboard-items", clipboardItemHandler.GetAll)
+
+	engine.GET("/api/v1/clipboard-items", clipboardItemHandler.GetAll)
+	engine.GET("/api/v1/clipboard-items/:id", clipboardItemHandler.GetByID)
+	engine.GET("/api/v1/clipboard-items/content/:content_type", clipboardItemHandler.GetByContentType)
+	engine.GET("/api/v1/clipboard-items/current", clipboardItemHandler.GetCurrent)
+	engine.DELETE("/api/v1/clipboard-items/:id", clipboardItemHandler.Delete)
+	engine.POST("/api/v1/clipboard-items", clipboardItemHandler.Create)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	engine.Run(":8080")
 }
