@@ -25,7 +25,7 @@ class AppTheme {
       colorScheme: colorScheme,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         foregroundColor: colorScheme.onSurfaceVariant,
         elevation: 0,
       ),
@@ -88,7 +88,7 @@ class AppTheme {
       colorScheme: colorScheme,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         foregroundColor: colorScheme.onSurfaceVariant,
         elevation: 0,
       ),

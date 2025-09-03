@@ -35,7 +35,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: textTheme,
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.surface,
       // Windows 11 uses subtle app bars that blend with content
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -117,7 +117,7 @@ class AppTheme {
       colorScheme: colorScheme,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         foregroundColor: colorScheme.onSurfaceVariant,
         elevation: 0,
       ),

@@ -10,10 +10,10 @@ class ClipboardItemDetails extends StatelessWidget {
   final VoidCallback onApply;
   
   const ClipboardItemDetails({
-    Key? key,
+    super.key,
     required this.item,
     required this.onApply,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-import 'package:uuid/uuid.dart';
 
 /// Represents the type of content stored in a clipboard item
 enum ClipboardContentType {

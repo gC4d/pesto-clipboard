@@ -11,11 +11,11 @@ class ClipboardItemCard extends StatelessWidget {
   final VoidCallback onApply;
   
   const ClipboardItemCard({
-    Key? key,
+    super.key,
     required this.item,
     required this.onTap,
     required this.onApply,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

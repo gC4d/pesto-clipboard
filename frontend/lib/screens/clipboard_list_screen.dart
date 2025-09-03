@@ -9,7 +9,7 @@ import '../utils/app_theme.dart';
 
 /// Main screen for displaying the clipboard history
 class ClipboardListScreen extends StatefulWidget {
-  const ClipboardListScreen({Key? key}) : super(key: key);
+  const ClipboardListScreen({super.key});
 
   @override
   State<ClipboardListScreen> createState() => _ClipboardListScreenState();

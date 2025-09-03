@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../models/clipboard_item.dart';
 import '../config/app_config.dart';
