@@ -124,23 +124,6 @@ class ClipboardItemCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                      const Spacer(),
-                      if (!item.isCurrent)
-                        ElevatedButton(
-                          onPressed: onTap,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                            foregroundColor: colorScheme.onPrimary,
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                            minimumSize: const Size(0, 36),
-                            textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text('Apply'),
-                        ),
                     ],
                   ),
                 )
