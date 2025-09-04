@@ -2,6 +2,10 @@ import 'package:flutter/material.dart' hide ShortcutManager;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'system_tray_manager.dart';
 import 'shortcut_manager.dart';
+import '../services/clipboard_monitor_service.dart';
+import '../services/realtime_sync_service.dart';
+import '../viewmodels/clipboard_viewmodel.dart';
+import 'locator.dart';
 
 class AppManager {
   static final AppManager _instance = AppManager._internal();
@@ -10,6 +14,8 @@ class AppManager {
   
   final SystemTrayManager _systemTrayManager = SystemTrayManager();
   final ShortcutManager _shortcutManager = ShortcutManager();
+  final ClipboardMonitorService _clipboardMonitor = ClipboardMonitorService();
+  final RealtimeSyncService _realtimeSync = RealtimeSyncService();
   
   bool _isInitialized = false;
   
@@ -25,6 +31,12 @@ class AppManager {
       
       // Configure window behavior
       _configureWindow();
+      
+      // Start clipboard monitoring
+      _startClipboardMonitoring();
+      
+      // Start real-time synchronization
+      _startRealtimeSync();
       
       _isInitialized = true;
     } catch (e) {
@@ -44,6 +56,54 @@ class AppManager {
     appWindow.visible = false;
   }
   
+  void _startClipboardMonitoring() {
+    try {
+      // Get the clipboard view model to update when new items are detected
+      final viewModel = locator<ClipboardViewModel>();
+      
+      // Set callback for when new clipboard items are detected
+      _clipboardMonitor.onNewItem = (item) {
+        // Refresh the view model to show the new item
+        viewModel.refresh();
+      };
+      
+      // Start monitoring
+      _clipboardMonitor.startMonitoring();
+      
+      debugPrint('Clipboard monitoring started');
+    } catch (e) {
+      debugPrint('Failed to start clipboard monitoring: $e');
+    }
+  }
+  
+  void _startRealtimeSync() {
+    try {
+      // Get the clipboard view model to update when items change
+      final viewModel = locator<ClipboardViewModel>();
+      
+      // Set callback for when clipboard items are updated
+      _realtimeSync.onItemsUpdated = (items) {
+        // Update the view model with the new items
+        // Note: This is a simplified approach - in a real app, you might want to
+        // update the view model more efficiently
+        viewModel.refresh();
+      };
+      
+      // Set callback for when new items are added
+      _realtimeSync.onNewItem = (item) {
+        // Refresh the view model to show the new item
+        viewModel.refresh();
+      };
+      
+      // Start synchronization
+      _realtimeSync.startSync();
+      
+      debugPrint('Real-time synchronization started');
+    } catch (e) {
+      debugPrint('Failed to start real-time synchronization: $e');
+    }
+  }
+  
   void showWindow() {
     _systemTrayManager.showWindow();
   }
@@ -59,5 +119,7 @@ class AppManager {
   Future<void> dispose() async {
     await _systemTrayManager.dispose();
     await _shortcutManager.dispose();
+    _clipboardMonitor.dispose();
+    _realtimeSync.dispose();
   }
 }

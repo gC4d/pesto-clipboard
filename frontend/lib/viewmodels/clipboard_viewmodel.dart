@@ -1,15 +1,18 @@
 import 'package:flutter/foundation.dart';
 import '../models/clipboard_item.dart';
 import '../services/api_service.dart';
+import '../services/clipboard_item_service.dart';
 import 'base_viewmodel.dart';
 
 enum ClipboardViewState { initial, loading, loaded, error }
 
 class ClipboardViewModel extends BaseViewModel {
-  final ApiService _apiService;
+  final ClipboardItemService _clipboardItemService;
   
-  ClipboardViewModel({ApiService? apiService})
-      : _apiService = apiService ?? ApiService();
+  ClipboardViewModel({
+    ApiService? apiService,
+    ClipboardItemService? clipboardItemService,
+  }) : _clipboardItemService = clipboardItemService ?? ClipboardItemService();
   
   // State management
   ClipboardViewState _state = ClipboardViewState.initial;
@@ -42,9 +45,11 @@ class ClipboardViewModel extends BaseViewModel {
   /// Load all clipboard items
   Future<void> loadClipboardItems() async {
     _setState(ClipboardViewState.loading);
+    debugPrint('Loading clipboard items...');
     
     try {
-      final items = await _apiService.getAllClipboardItems();
+      final items = await _clipboardItemService.getAllClipboardItems();
+      debugPrint('Loaded ${items.length} clipboard items');
       _clipboardItems = items;
       
       // Find current item
@@ -53,7 +58,9 @@ class ClipboardViewModel extends BaseViewModel {
           : items.firstWhere((item) => item.isCurrent);
       
       _setState(ClipboardViewState.loaded);
+      debugPrint('Clipboard items loaded successfully');
     } catch (e) {
+      debugPrint('Error loading clipboard items: $e');
       _setError(e.toString());
     }
   }
@@ -66,7 +73,13 @@ class ClipboardViewModel extends BaseViewModel {
   /// Get a clipboard item by ID
   Future<ClipboardItem?> getItemById(int id) async {
     try {
-      return await _apiService.getClipboardItemById(id.toString());
+      final items = await _clipboardItemService.getAllClipboardItems();
+      try {
+        return items.firstWhere((item) => item.id == id);
+      } catch (e) {
+        // firstWhere throws if no element is found
+        return null;
+      }
     } catch (e) {
       debugPrint('Error fetching item by ID: $e');
       return null;
@@ -76,10 +89,18 @@ class ClipboardViewModel extends BaseViewModel {
   /// Get the current clipboard item
   Future<ClipboardItem?> getCurrentItem() async {
     try {
-      final item = await _apiService.getCurrentClipboardItem();
-      _currentItem = item;
-      notifyListeners();
-      return item;
+      final items = await _clipboardItemService.getAllClipboardItems();
+      try {
+        final currentItem = items.firstWhere((item) => item.isCurrent);
+        _currentItem = currentItem;
+        notifyListeners();
+        return currentItem;
+      } catch (e) {
+        // firstWhere throws if no element is found
+        _currentItem = null;
+        notifyListeners();
+        return null;
+      }
     } catch (e) {
       debugPrint('Error fetching current item: $e');
       return null;
@@ -89,7 +110,7 @@ class ClipboardViewModel extends BaseViewModel {
   /// Get clipboard items by content type
   Future<List<ClipboardItem>> getItemsByContentType(ClipboardContentType contentType) async {
     try {
-      return await _apiService.getClipboardItemsByContentType(contentType.toJson());
+      return await _clipboardItemService.getClipboardItemsByContentType(contentType);
     } catch (e) {
       debugPrint('Error fetching items by content type: $e');
       return [];
@@ -99,17 +120,20 @@ class ClipboardViewModel extends BaseViewModel {
   /// Create a new clipboard item
   Future<ClipboardItem?> createItem(CreateClipboardItemRequest request) async {
     try {
-      final newItem = await _apiService.createClipboardItem(request);
+      final newItem = await _clipboardItemService.createClipboardItem(request);
       
-      // Add to the list
-      _clipboardItems = [newItem, ..._clipboardItems];
-      
-      // Update current item if needed
-      if (newItem.isCurrent) {
-        _currentItem = newItem;
+      if (newItem != null) {
+        // Add to the list
+        _clipboardItems = [newItem, ..._clipboardItems];
+        
+        // Update current item if needed
+        if (newItem.isCurrent) {
+          _currentItem = newItem;
+        }
+        
+        notifyListeners();
       }
       
-      notifyListeners();
       return newItem;
     } catch (e) {
       debugPrint('Error creating clipboard item: $e');
@@ -120,18 +144,21 @@ class ClipboardViewModel extends BaseViewModel {
   /// Delete a clipboard item
   Future<bool> deleteItem(int id) async {
     try {
-      await _apiService.deleteClipboardItem(id.toString());
+      final success = await _clipboardItemService.deleteClipboardItem(id);
       
-      // Remove from the list
-      _clipboardItems = _clipboardItems.where((item) => item.id != id).toList();
-      
-      // Update current item if needed
-      if (_currentItem?.id == id) {
-        _currentItem = null;
+      if (success) {
+        // Remove from the list
+        _clipboardItems = _clipboardItems.where((item) => item.id != id).toList();
+        
+        // Update current item if needed
+        if (_currentItem?.id == id) {
+          _currentItem = null;
+        }
+        
+        notifyListeners();
       }
       
-      notifyListeners();
-      return true;
+      return success;
     } catch (e) {
       debugPrint('Error deleting clipboard item: $e');
       return false;
@@ -141,26 +168,23 @@ class ClipboardViewModel extends BaseViewModel {
   /// Set an item as current
   Future<bool> setCurrentItem(int id) async {
     try {
-      // Create a request to update the item as current
-      final item = _clipboardItems.firstWhere((item) => item.id == id);
-      final request = CreateClipboardItemRequest(
-        content: item.content,
-        contentType: item.contentType,
-      );
+      final updatedItem = await _clipboardItemService.setCurrentItem(id);
       
-      final updatedItem = await _apiService.createClipboardItem(request);
+      if (updatedItem != null) {
+        // Update the list
+        _clipboardItems = _clipboardItems
+            .map((item) => item.id == id 
+                ? updatedItem.copyWith(isCurrent: true) 
+                : item.copyWith(isCurrent: false))
+            .toList();
+        
+        _currentItem = updatedItem.copyWith(isCurrent: true);
+        notifyListeners();
+        
+        return true;
+      }
       
-      // Update the list
-      _clipboardItems = _clipboardItems
-          .map((item) => item.id == id 
-              ? updatedItem.copyWith(isCurrent: true) 
-              : item.copyWith(isCurrent: false))
-          .toList();
-      
-      _currentItem = updatedItem.copyWith(isCurrent: true);
-      notifyListeners();
-      
-      return true;
+      return false;
     } catch (e) {
       debugPrint('Error setting current clipboard item: $e');
       return false;

@@ -99,20 +99,26 @@ class ApiService {
   /// Create a new clipboard item
   Future<ClipboardItem> createClipboardItem(CreateClipboardItemRequest request) async {
     try {
+      debugPrint('Sending POST request to /clipboard-items with data: ${request.toJson()}');
       final response = await _dio.post(
         '/clipboard-items',
         data: request.toJson(),
       );
       
+      debugPrint('Received response with status code: ${response.statusCode}');
+      
       if (response.statusCode == 201) {
         final Map<String, dynamic> data = response.data;
+        debugPrint('Received response data: $data');
         return ClipboardItem.fromJson(data);
       } else {
         throw HttpException('Failed to create clipboard item: ${response.statusCode}');
       }
     } on DioException catch (e) {
+      debugPrint('DioException when creating clipboard item: ${e.message}');
       throw Exception('Error creating clipboard item: ${e.message}');
     } catch (e) {
+      debugPrint('Exception when creating clipboard item: $e');
       throw Exception('Error creating clipboard item: $e');
     }
   }

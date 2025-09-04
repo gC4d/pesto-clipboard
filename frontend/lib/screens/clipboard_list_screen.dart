@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import '../widgets/clipboard_item_card.dart';
 import '../viewmodels/clipboard_viewmodel.dart';
 
@@ -18,8 +19,9 @@ class _ClipboardListScreenState extends State<ClipboardListScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the view model
-    _viewModel = ClipboardViewModel();
+    // Get services from locator
+    _viewModel = GetIt.instance<ClipboardViewModel>();
+    
     // Load clipboard items after the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _viewModel.loadClipboardItems();
