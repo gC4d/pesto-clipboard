@@ -14,6 +14,9 @@ class ClipboardListScreen extends StatefulWidget {
 class _ClipboardListScreenState extends State<ClipboardListScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Scaffold(
         body: Column(
             children: [
@@ -21,7 +24,10 @@ class _ClipboardListScreenState extends State<ClipboardListScreen> {
                 child: Row(
                   children: [
                     Expanded(child: MoveWindow()),
-                    CloseWindowButton(),
+                    CloseWindowButton(colors: WindowButtonColors(
+                      iconNormal: colorScheme.primary,
+                      iconMouseOver:colorScheme.error)
+                      ),
                   ],
                 ),
               ),
