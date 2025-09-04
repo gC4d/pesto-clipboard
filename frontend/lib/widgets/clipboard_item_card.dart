@@ -60,7 +60,7 @@ class ClipboardItemCard extends StatelessWidget {
                   Text(
                     DateFormatter.format(item.createdAt),
                     style: textTheme.bodySmall?.copyWith(
-                      color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                      color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                       fontSize: 13,
                     ),
                   ),
