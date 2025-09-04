@@ -32,7 +32,6 @@ func RegisterRoute(router *gin.Engine, r RouteInfo, handler gin.HandlerFunc) {
 		router.Any(r.Path, handler)
     }
 
-    
     swagger.GenerateSwaggerDoc(
 		r.Path, r.Method, r.InputType, 
 		r.OutputType, r.Summary, r.Description, 

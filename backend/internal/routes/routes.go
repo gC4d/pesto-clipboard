@@ -7,6 +7,7 @@ import (
 	"example/pesto-backend/internal/services"
 	"example/pesto-backend/internal/repositories"
 	"example/pesto-backend/internal/models"
+	"example/pesto-backend/internal/dto"
 	"example/pesto-backend/pkg/routers"
 	"gorm.io/gorm"
 )
@@ -18,8 +19,8 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "POST",
-		Path:        "/clipboard-items",
-		InputType:   models.ClipboardItem{},
+		Path:        "/api/v1/clipboard-items",
+		InputType:   dto.ClipboardItemInputDto{},
 		OutputType:  models.ClipboardItem{},
 		Summary:     "Create a clipboard item",
 		Description: "Creates a new clipboard item",
@@ -28,9 +29,9 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "GET",
-		Path:        "/clipboard-items",
+		Path:        "/api/v1/clipboard-items",
 		InputType:   nil,
-		OutputType:  models.ClipboardItem{},
+		OutputType:  []models.ClipboardItem{},
 		Summary:     "Get all clipboard items",
 		Description: "Retrieves all clipboard items",
 		StatusCode:  200,
@@ -38,7 +39,7 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "GET",
-		Path:        "/clipboard-items/:id",
+		Path:        "/api/v1/clipboard-items/:id",
 		InputType:   nil,
 		OutputType:  models.ClipboardItem{},
 		Summary:     "Get a clipboard item by ID",
@@ -48,9 +49,9 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "GET",
-		Path:        "/clipboard-items/content/:content_type",
+		Path:        "/api/v1/clipboard-items/content/:content_type",
 		InputType:   nil,
-		OutputType:  models.ClipboardItem{},
+		OutputType:  []models.ClipboardItem{},
 		Summary:     "Get clipboard items by content type",
 		Description: "Retrieves all clipboard items with a specific content type",
 		StatusCode:  200,
@@ -58,7 +59,7 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "GET",
-		Path:        "/clipboard-items/current",
+		Path:        "/api/v1/clipboard-items/current",
 		InputType:   nil,
 		OutputType:  models.ClipboardItem{},
 		Summary:     "Get the current clipboard item",
@@ -68,7 +69,7 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	routers.RegisterRoute(router, routers.RouteInfo{
 		Method:      "DELETE",
-		Path:        "/clipboard-items/:id",
+		Path:        "/api/v1/clipboard-items/:id",
 		InputType:   nil,
 		OutputType:  nil,
 		Summary:     "Delete a clipboard item",
