@@ -49,7 +49,7 @@ class ContentPreview extends StatelessWidget {
                   Center(
                       child: Icon(Icons.broken_image,
                           size: 48,
-                          color: colorScheme.onSurface.withOpacity(0.5))),
+                          color: colorScheme.onSurface.withValues(alpha: 0.5))),
             ),
           );
         } catch (e) {
@@ -57,7 +57,7 @@ class ContentPreview extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              color: colorScheme.surface.withOpacity(0.5),
+              color: colorScheme.surface.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: colorScheme.outline),
             ),
@@ -67,11 +67,11 @@ class ContentPreview extends StatelessWidget {
                 children: [
                   Icon(Icons.broken_image,
                       size: 32,
-                      color: colorScheme.onSurface.withOpacity(0.5)),
+                      color: colorScheme.onSurface.withValues(alpha: 0.5)),
                   const SizedBox(height: 8),
                   Text('Image preview unavailable',
                       style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurface.withOpacity(0.7),
+                          color: colorScheme.onSurface.withValues(alpha: 0.7),
                           fontSize: 13)),
                 ],
               ),
@@ -84,7 +84,7 @@ class ContentPreview extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: colorScheme.surface.withOpacity(0.8),
+            color: colorScheme.surface.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: colorScheme.outline),
           ),
