@@ -36,11 +36,11 @@ class ContentPreview extends StatelessWidget {
           final imageData = base64Decode(item.content);
           return Container(
             width: double.infinity,
+            height: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: colorScheme.outline),
             ),
-            height: 120,
             clipBehavior: Clip.antiAlias,
             child: Image.memory(
               imageData,
@@ -55,7 +55,7 @@ class ContentPreview extends StatelessWidget {
         } catch (e) {
           return Container(
             width: double.infinity,
-            height: 100,
+            height: double.infinity,
             decoration: BoxDecoration(
               color: colorScheme.surface.withOpacity(0.5),
               borderRadius: BorderRadius.circular(12),
