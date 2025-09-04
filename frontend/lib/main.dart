@@ -3,21 +3,18 @@ import 'package:frontend/screens/clipboard_list_screen.dart';
 import 'utils/app_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'utils/locator.dart';
+import 'utils/app_manager.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Setup dependency injection
   setupLocator();
   
+  // Initialize app manager
+  await AppManager().initialize();
+  
   runApp(PestoClipboardApp());
-
-  doWhenWindowReady(() {
-    appWindow.minSize = const Size(50, 100);
-    appWindow.size = const Size(400, 500);
-    appWindow.alignment = Alignment.center;
-    appWindow.show();
-  });
 }
 
 class PestoClipboardApp extends StatelessWidget {

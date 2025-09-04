@@ -5,16 +5,40 @@ import 'package:provider/provider.dart';
 import '../widgets/clipboard_item_card.dart';
 import '../viewmodels/clipboard_viewmodel.dart';
 
-class ClipboardListScreen extends StatelessWidget {
+class ClipboardListScreen extends StatefulWidget {
   const ClipboardListScreen({super.key});
+
+  @override
+  State<ClipboardListScreen> createState() => _ClipboardListScreenState();
+}
+
+class _ClipboardListScreenState extends State<ClipboardListScreen> {
+  late ClipboardViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the view model
+    _viewModel = ClipboardViewModel();
+    // Load clipboard items after the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _viewModel.loadClipboardItems();
+    });
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     
-    return ChangeNotifierProvider(
-      create: (context) => ClipboardViewModel(),
+    return ChangeNotifierProvider.value(
+      value: _viewModel,
       child: Scaffold(
         body: Column(
           children: [
@@ -32,11 +56,6 @@ class ClipboardListScreen extends StatelessWidget {
             Expanded(
               child: Consumer<ClipboardViewModel>(
                 builder: (context, viewModel, child) {
-                  // Load items when first building the widget
-                  if (viewModel.state == ClipboardViewState.initial) {
-                    viewModel.loadClipboardItems();
-                  }
-                  
                   return viewModel.isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : viewModel.hasError
