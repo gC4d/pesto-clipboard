@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/clipboard_list_screen.dart';
 import 'utils/app_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'utils/locator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Setup dependency injection
+  setupLocator();
   
   runApp(PestoClipboardApp());
 

@@ -35,7 +35,7 @@ extension ClipboardContentTypeExtension on ClipboardContentType {
 
 /// Model class for clipboard items
 class ClipboardItem {
-  final String id;
+  final int id;
   final String content; // Base64 for images, plain text for text/code
   final ClipboardContentType contentType;
   final DateTime createdAt;
@@ -100,7 +100,7 @@ class ClipboardItem {
 
   /// Create a copy of this clipboard item with updated properties
   ClipboardItem copyWith({
-    String? id,
+    int? id,
     String? content,
     ClipboardContentType? contentType,
     DateTime? createdAt,
