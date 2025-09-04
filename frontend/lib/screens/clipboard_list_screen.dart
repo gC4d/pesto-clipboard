@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:frontend/utils/helper_doido_da_img_test.dart';
 import '../widgets/clipboard_item_card.dart';
 import '../models/clipboard_item.dart';
 
