@@ -21,18 +21,18 @@ class ContentTypeIcon extends StatelessWidget {
         break;
       case ClipboardContentType.image:
         iconData = Icons.image;
-        iconColor = colorScheme.secondary;
+        iconColor = colorScheme.primary;
         break;
       case ClipboardContentType.code:
         iconData = Icons.code;
-        iconColor = colorScheme.tertiary;
+        iconColor = colorScheme.primary;
         break;
     }
 
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: iconColor.withValues(alpha: 0.1),
+        color: iconColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Icon(iconData, color: iconColor, size: 16),

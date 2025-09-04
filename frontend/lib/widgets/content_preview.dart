@@ -11,6 +11,7 @@ class ContentPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     switch (item.contentType) {
       case ClipboardContentType.text:
@@ -21,7 +22,10 @@ class ContentPreview extends StatelessWidget {
             item.content.length > 150
                 ? '${item.content.substring(0, 150)}...'
                 : item.content,
-            style: theme.textTheme.bodyMedium?.copyWith(fontSize: 15),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 15,
+              color: colorScheme.onSurface,
+            ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
@@ -33,8 +37,8 @@ class ContentPreview extends StatelessWidget {
           return Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: colorScheme.outline),
             ),
             height: 120,
             clipBehavior: Clip.antiAlias,
@@ -45,10 +49,7 @@ class ContentPreview extends StatelessWidget {
                   Center(
                       child: Icon(Icons.broken_image,
                           size: 48,
-                          color: Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withValues(alpha: 0.5))),
+                          color: colorScheme.onSurface.withOpacity(0.5))),
             ),
           );
         } catch (e) {
@@ -56,9 +57,9 @@ class ContentPreview extends StatelessWidget {
             width: double.infinity,
             height: 100,
             decoration: BoxDecoration(
-              color: Theme.of(context).cardTheme.color?.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Theme.of(context).dividerColor),
+              color: colorScheme.surface.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: colorScheme.outline),
             ),
             child: Center(
               child: Column(
@@ -66,22 +67,12 @@ class ContentPreview extends StatelessWidget {
                 children: [
                   Icon(Icons.broken_image,
                       size: 32,
-                      color: Theme.of(context)
-                          .iconTheme
-                          .color
-                          ?.withValues(alpha: 0.5)),
+                      color: colorScheme.onSurface.withOpacity(0.5)),
                   const SizedBox(height: 8),
                   Text('Image preview unavailable',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.color
-                                  ?.withValues(alpha: 0.7),
-                              fontSize: 13)),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurface.withOpacity(0.7),
+                          fontSize: 13)),
                 ],
               ),
             ),
@@ -93,18 +84,19 @@ class ContentPreview extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).cardTheme.color?.withValues(alpha: 0.8),
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: Theme.of(context).dividerColor),
+            color: colorScheme.surface.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: colorScheme.outline),
           ),
           child: Text(
             item.content.length > 150
                 ? '${item.content.substring(0, 150)}...'
                 : item.content,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontFamily: 'monospace',
               fontSize: 13,
               height: 1.4,
+              color: colorScheme.onSurface,
             ),
             maxLines: 5,
             overflow: TextOverflow.ellipsis,
