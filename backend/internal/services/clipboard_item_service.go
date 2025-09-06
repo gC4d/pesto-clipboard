@@ -4,6 +4,7 @@ import (
 	"context"
 	"example/pesto-backend/internal/models"
 	"example/pesto-backend/internal/repositories"
+	"gorm.io/gorm"
 )
 
 type ClipboardItemService struct {
@@ -15,6 +16,15 @@ func NewClipboardItemService(repository repositories.ClipboardItemRepository) *C
 }
 
 func (s *ClipboardItemService) Create(ctx context.Context, item *models.ClipboardItem) error {
+	currentItem, err := s.repository.GetCurrent(ctx)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return err
+	}
+	if currentItem != nil {
+		currentItem.IsCurrent = false
+		s.repository.Update(ctx, currentItem)
+	}
+	item.IsCurrent = true
 	return s.repository.Create(ctx, item)
 }
 

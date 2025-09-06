@@ -13,6 +13,7 @@ type ClipboardItemRepository interface {
 	GetByID(ctx context.Context, id uint) (*models.ClipboardItem, error)
 	GetByContentType(ctx context.Context, contentType string) ([]*models.ClipboardItem, error)
 	GetCurrent(ctx context.Context) (*models.ClipboardItem, error)
+	Update(ctx context.Context, item *models.ClipboardItem) error
 	Delete(ctx context.Context, id uint) error
 }
 
@@ -21,6 +22,11 @@ var _ ClipboardItemRepository = (*gormClipboardItemRepository)(nil)
 
 type gormClipboardItemRepository struct {
 	db *gorm.DB
+}
+
+// Update implements ClipboardItemRepository.
+func (r *gormClipboardItemRepository) Update(ctx context.Context, item *models.ClipboardItem) error {
+	return r.db.WithContext(ctx).Save(item).Error
 }
 
 // NewClipboardItemRepository creates a new clipboard item repository

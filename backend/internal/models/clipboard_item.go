@@ -14,8 +14,6 @@ type ClipboardItem struct {
 	CreatedAt time.Time `json:"created_at" example:"2025-01-01T00:00:00Z"`
 	// Last update timestamp
 	UpdatedAt time.Time `json:"updated_at" example:"2025-01-01T00:00:00Z"`
-	// Deletion timestamp (if deleted)
-	DeletedAt *time.Time `json:"deleted_at" example:"null"`
 	// Content of the clipboard item
 	Content string `json:"content" example:"Hello, world!"`
 	// Type of the content (e.g., text, image, url)
