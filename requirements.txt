@@ -1,0 +1,11 @@
+PyGObject
+python-xlib
+dbus-next
+dasbus
+pywayland
+aiosqlite
+pydantic
+pystray
+Pillow
+typer
+watchdog
